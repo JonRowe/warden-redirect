@@ -28,7 +28,7 @@ To use with a specific location and status:
 
 To use with a specific location, status and extra headers:
 
-    throw :warden, Warden::Redirect.new('/location',301, X-SHALL-NOT-PASS: true)
+    throw :warden, Warden::Redirect.new('/location',301, "X-SHALL-NOT-PASS" => true)
 
 ## Contributing
 

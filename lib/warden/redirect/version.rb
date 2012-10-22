@@ -1,5 +1,5 @@
 module Warden
-  module Redirect
+  class Redirect
     VERSION = "0.0.1"
   end
 end

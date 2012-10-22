@@ -5,6 +5,7 @@ shared_examples_for 'warden redirect' do |opts|
   #rack status
   its([0])      { should == opts[:status] }
   its(:status)  { should == opts[:status] }
+  its(:first)   { should == opts[:status] }
 
   #rack headers
   its([1])      { should == opts[:headers] }
@@ -21,7 +22,6 @@ shared_examples_for 'warden redirect' do |opts|
     headers.should == opts[:headers]
     body.should    == subject[2]
   end
-
 end
 
 describe 'redirecting to a specific location' do
@@ -46,4 +46,19 @@ describe 'redirecting to a specific location with a status and headers' do
   it_should_behave_like 'warden redirect',
     :status  => 301,
     :headers => { "Location" => "/location", "Content-Type" => "text/html", "X-SHALL-NOT-PASS" => true }
+end
+
+describe 'warden compatilbity' do
+  subject      { throw :warden, Warden::Redirect.new('/location') }
+  let(:result) { catch(:warden) { subject } }
+
+  specify do
+    case result
+    when Array
+      true
+    else
+      fail
+    end
+  end
+
 end

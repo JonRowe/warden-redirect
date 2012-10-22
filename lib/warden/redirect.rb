@@ -1,25 +1,13 @@
 module Warden
-  class Redirect
+  class Redirect < Array
     def initialize(location,status=302,headers={})
-      @location, @status, @headers = location, status, headers
+      redirect_headers = headers.merge({ "Content-Type" => "text/html", "Location" => location })
+      body = "<html><body>You are being redirected to <a href='#{location}'>#{location}</a></body></html>"
+      super [status,redirect_headers,[body]]
     end
 
-    def [] key
-      rack[key]
-    end
-
-    def status;  @status; end
-    def headers; @headers.merge({ "Content-Type" => "text/html", "Location" => @location }); end
-    def body;    "<html><body>You are being redirected to <a href='#{@location}'>#{@location}</a></body></html>"; end
-
-    def rack
-      [status,headers,[body]]
-    end
-    alias :to_ary :rack
-    alias :to_a   :rack
-
-    def kind_of?(type)
-      type == Array || super
-    end
+    def status;  self[0]; end
+    def headers; self[1]; end
+    def body;    self[2]; end
   end
-end 
+end

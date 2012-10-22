@@ -15,6 +15,12 @@ shared_examples_for 'warden redirect' do |opts|
 
   #warden compat
   it { should be_a Array }
+  specify do
+    status, headers, body = subject
+    status.should  == opts[:status]
+    headers.should == opts[:headers]
+    body.should    == subject[2]
+  end
 
 end
 

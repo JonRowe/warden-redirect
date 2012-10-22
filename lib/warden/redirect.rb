@@ -15,6 +15,8 @@ module Warden
     def rack
       [status,headers,[body]]
     end
+    alias :to_ary :rack
+    alias :to_a   :rack
 
     def kind_of?(type)
       type == Array || super

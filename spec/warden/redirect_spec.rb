@@ -1,52 +1,43 @@
 require 'warden/redirect'
 
-describe 'redirecting to a specific location' do
-  subject { Warden::Redirect.new '/location' }
+shared_examples_for 'warden redirect' do |opts|
 
   #rack status
-  its([0]) { should == 302 }
+  its([0])      { should == opts[:status] }
+  its(:status)  { should == opts[:status] }
+
   #rack headers
-  its([1]) { should == { "Location" => "/location", "Content-Type" => "text/html" } }
+  its([1])      { should == opts[:headers] }
+  its(:headers) { should == opts[:headers] }
+
   #rack body
   specify { subject[2].first.should include 'You are being redirected' }
 
-  its(:headers) { should == { "Location" => "/location", "Content-Type" => "text/html" } }
-  its(:status)  { should == 302 }
-
   #warden compat
   it { should be_a Array }
+
+end
+
+describe 'redirecting to a specific location' do
+  subject { Warden::Redirect.new '/location' }
+
+  it_should_behave_like 'warden redirect',
+    :status  => 302,
+    :headers => { "Location" => "/location", "Content-Type" => "text/html" }
 end
 
 describe 'redirecting to a specific location with a status' do
   subject { Warden::Redirect.new '/location', 301 }
 
-  #rack status
-  its([0]) { should == 301 }
-  #rack headers
-  its([1]) { should == { "Location" => "/location", "Content-Type" => "text/html" } }
-  #rack body
-  specify { subject[2].first.should include 'You are being redirected' }
-
-  its(:headers) { should == { "Location" => "/location", "Content-Type" => "text/html" } }
-  its(:status)  { should == 301 }
-
-  #warden compat
-  it { should be_a Array }
+  it_should_behave_like 'warden redirect',
+    :status  => 301,
+    :headers => { "Location" => "/location", "Content-Type" => "text/html" }
 end
 
 describe 'redirecting to a specific location with a status and headers' do
   subject { Warden::Redirect.new '/location', 301, "X-SHALL-NOT-PASS" => true  }
 
-  #rack status
-  its([0]) { should == 301 }
-  #rack headers
-  its([1]) { should == { "Location" => "/location", "Content-Type" => "text/html", "X-SHALL-NOT-PASS" => true } }
-  #rack body
-  specify { subject[2].first.should include 'You are being redirected' }
-
-  its(:headers) { should == { "Location" => "/location", "Content-Type" => "text/html", "X-SHALL-NOT-PASS" => true } }
-  its(:status)  { should == 301 }
-
-  #warden compat
-  it { should be_a Array }
+  it_should_behave_like 'warden redirect',
+    :status  => 301,
+    :headers => { "Location" => "/location", "Content-Type" => "text/html", "X-SHALL-NOT-PASS" => true }
 end

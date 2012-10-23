@@ -1,3 +1,4 @@
+[![Build Status](https://secure.travis-ci.org/JonRowe/warden-redirect.png)](http://travis-ci.org/JonRowe/warden-redirect)
 # Warden::Redirect
 
 Simple gem for throwing redirects in warden.

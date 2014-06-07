@@ -3,24 +3,24 @@ require 'warden/redirect'
 shared_examples_for 'warden redirect' do |opts|
 
   #rack status
-  its([0])      { should == opts[:status] }
-  its(:status)  { should == opts[:status] }
-  its(:first)   { should == opts[:status] }
+  specify { expect(subject[0]).to      eq opts[:status] }
+  specify { expect(subject.status).to  eq opts[:status] }
+  specify { expect(subject.first).to   eq opts[:status] }
 
   #rack headers
-  its([1])      { should == opts[:headers] }
-  its(:headers) { should == opts[:headers] }
+  specify { expect(subject[1]).to      eq opts[:headers] }
+  specify { expect(subject.headers).to eq opts[:headers] }
 
   #rack body
-  specify { subject[2].first.should include 'You are being redirected' }
+  specify { expect(subject[2].first).to include 'You are being redirected' }
 
   #warden compat
-  it { should be_a Array }
+  it { is_expected.to be_a Array }
   specify do
     status, headers, body = subject
-    status.should  == opts[:status]
-    headers.should == opts[:headers]
-    body.should    == subject[2]
+    expect(status).to  eq opts[:status]
+    expect(headers).to eq opts[:headers]
+    expect(body).to    eq subject[2]
   end
 end
 

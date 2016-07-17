@@ -18,6 +18,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency 'warden'
+  gem.add_runtime_dependency 'rack', '< 2.0.0'
 
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'rake', '~> 10.0.0'

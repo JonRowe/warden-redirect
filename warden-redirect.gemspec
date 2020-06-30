@@ -20,6 +20,8 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'warden'
   if RUBY_VERSION <= '2.2.2'
     gem.add_runtime_dependency 'rack', '< 2.0.0'
+  else
+    gem.add_runtime_dependency 'rack', '>= 2.1.4'
   end
 
   gem.add_development_dependency 'rspec'
